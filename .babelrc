@@ -1,0 +1,14 @@
+{
+	"presets": [ "es2015", "stage-0" ],
+	"ignore": [
+		"**/*.html",
+		"**/*.css",
+		"./public/**",
+		"./dist/**",
+		"./node_modules/**",
+
+
+
+		"./webpack.config.js",
+	]
+}

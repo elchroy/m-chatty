@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Real Time Chat</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="./style.css">
+</head>
+<body>
+	<h2>Chat!</h2>
+	<div id="app">
+
+		<div id="signIn" v-if="!signedIn">
+			<input value="elchroy" type="text" v-model="username" name="username">
+			<input value="elchroy" type="password" v-model="password" name="password">
+			<button @click="signIn">Sign In</button>
+		</div>
+
+
+		<div id="sign-out" v-if="signedIn">
+			<h3>{{ authUser.username }}</h3>
+
+			<button @click="signOut">Sign Out</button>
+
+			<ul>
+				<li @click="enableChat(user)" class="single-user" v-for="user in users">{{ user.username }}</li>
+			</ul>
+
+			<div>
+				Chats:
+				<span @click="loadChat(chat)" v-for="chat in chats"> {{ chat.name}} </span>
+			</div>
+
+			<div v-if="openChat">
+				<ul>
+					Thread for CHAT-{{ activeChat.name }}
+					<li v-for="message in messages"> {{ message.from }}: {{ message.body }} </li>
+				</ul>
+
+				<div>
+					<input type="text" v-model="messageBody" name="message-body" id="message-body" v-attr:placeholder="messageBody">
+					<button @click="sendMessage" name="send-buttton">Send Message</button>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<script src="axios.js" type="text/javascript" charset="utf-8"></script>
+	<script src="socket.io.js" type="text/javascript" charset="utf-8"></script>
+	<script src="vue.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="client.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>
