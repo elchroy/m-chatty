@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "serve": "nodemon ./dist/src/server.js --ignore ./public",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "pretest": "NODE_ENV=test ./node_modules/.bin/sequelize db:migrate",
+    "test": "NODE_ENV=test ./node_modules/.bin/mocha ./dist/tests/**/*.spec.js --watch --timeout 1000",
     "build": "babel ./**/*.js ./*.js --out-dir ./dist ",
     "watch": "babel -w ./**/*.js --out-dir ./dist",
     "start": "yarn run watch | yarn run serve"
@@ -15,10 +16,13 @@
     "babel-polyfill": "^6.26.0",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.18.3",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
     "express": "^4.16.3",
     "fs": "^0.0.1-security",
     "html-webpack-plugin": "^3.2.0",
     "jsonwebtoken": "^8.3.0",
+    "mocha": "^5.2.0",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.1",
     "nodemon": "^1.18.3",

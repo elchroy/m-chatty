@@ -23,6 +23,9 @@ new Vue({
     username: "daddyboy",
     password: "elchroy",
 
+    "signUpUsername": "",
+    "signUpPassword": "elchroy",
+
     socket: {}
   },
   created () {
@@ -31,7 +34,6 @@ new Vue({
   		const { token, id, username } = authorization;
   		this.signedIn = true;
   		this.authUser = { id, username, token };
-      this.socket = io.connect();
 	  	
 	  	axios.get(`${baseURL}/users`, {
 	  		headers: { Authorization: token }
@@ -44,7 +46,6 @@ new Vue({
       axios.get(`${baseURL}/chats`, {
         headers: { Authorization: token }
       }).then(results => {
-        console.log(results.data)
         this.chats = results.data
       }).catch()
   	} else {
@@ -84,7 +85,22 @@ new Vue({
         console.log(this.messages)
         this.activeChat = chat;
         this.openChat = true;
+        this.socket = io.connect();
       }).catch();
+    },
+
+    signUp () {
+      const { signUpUsername, signUpPassword } = this
+
+      axios.post(`${baseURL}/auth/signup`, {
+        username: signUpUsername,
+        password: signUpPassword,
+      }).then(result => {
+        const { id, username, token } = {auth: true, ...result.data};
+        localStorage.setItem('authCreds', JSON.stringify({auth: true, id, username, token }));
+        this.signedIn = true;
+        this.authUser = { id, username, token }
+      });
     },
 
   	signIn () {

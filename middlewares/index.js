@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { jwtCreds } from '../config/jwt_creds'
 import "babel-polyfill";
+import { BadRequestError, ServerError, NotFoundError } from '../helpers/errors';
 
 import db from '../models'
 const { Chat, User } = db;
@@ -9,44 +10,32 @@ const { secret } = jwtCreds;
 
 export const verifySignUp = (req, res, next) => {
 	const { username, password } = req.body || ""
-	// check if username is present.
-	// check if username is unique.
 	if (!username || !password) {
-		res.status(400).json({
-			// @todo Better error handling/messaging
-			message: 'Username/Password are required'
-		})
+		next(new BadRequestError('Username/Password are required', 400))
 	} else {
 		next();
 	}
 }
 
-
 export const verifyAuth = async (req, res, next) => {
 	
 	const { authorization } = req.headers
-	if (!authorization) res.status(400).json({message: "Authorization token is required."})
+	if (!authorization) next(new BadRequestError("Authorization token is required.", 400));
 	
 	try {
-		const decoded = jwt.verify(authorization, secret)
-		const { username, id } = decoded
+		const { username, id } = jwt.verify(authorization, secret)
 		req.authUser = await User.findOne({ where: { id } });
 		next();
 	} catch(e) {
-		res.status(400).json({message: "Invalid Token"})
+		next(new BadRequestError("Token is invalid", 500));
+		res.status(500).json({message: ""})
 	}
 }
 
 export const verifyChat = (req, res, next) => {
 	const { authUser:{ id }, params:{ chatId } } = req // destructuring
-	Chat.findOne({
-		where: {
-			id: chatId
-		}
-	}).then(chat => {
-		if (!chat) {
-			res.json({ message: 'Chat not found' })
-		}
+	Chat.findOne({ where:{ id:chatId } }).then(chat => {
+		if (!chat) next(new NotFoundError('Chat not found'));
 		req.chat = chat;
 		next()
 	})

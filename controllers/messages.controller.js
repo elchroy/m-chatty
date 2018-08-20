@@ -1,26 +1,27 @@
 import db from '../models'
 const { Message, User } = db;
 
+import { customResponse } from '../helpers';
+import { BadRequestError, ServerError, NotFoundError } from '../helpers/errors';
+
 // first ensure that the chat id is valid and it exists.
 export const createChatMessage = (req, res) => {
-	const { authUser:{id}, chat, body:{body} } = req // destructuring
-	// @todo consider using chat.addMessage to do this.
+	const { authUser:{id}, chat, body:{body} } = req;
 	Message.create({
 		from: id,
 		to: chat.id,
 		body
 	}).then(message => {
-		res.status(201).json(message)
+		res.status(201).json(customResponse("success", "New message created", message));
 	});
 
 }
 
 // first ensure that the chat id is valid and it exists.
-export const getAllChatMessages = (req, res) => {
+export const getAllChatMessages = async (req, res) => {
 	const { chat } = req // destructuring
-	
-	chat.getMessages().then(messages => {
-		messages.map(m => m.sender().then(chat => console.log(chat.name)))
-		res.status(200).json(messages)
-	});
+
+	const messages = await chat.getMessages();
+
+	res.status(200).json(customResponse("success", "Messages", messages));
 }

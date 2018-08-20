@@ -4,7 +4,8 @@ const baseConfig = {
     password: null,
     database: "chatapp_dev",
     host: "127.0.0.1",
-    dialect: "postgresql"
+    dialect: "postgresql",
+    logging: false,
   },
   
   test: {
@@ -12,7 +13,8 @@ const baseConfig = {
     password: null,
     database: "chatapp_test",
     host: "127.0.0.1",
-    dialect: "postgresql"
+    dialect: "postgresql",
+    logging: false,
   },
   
   production: {
@@ -20,7 +22,8 @@ const baseConfig = {
     password: null,
     database: "chatapp_production",
     host: "127.0.0.1",
-    dialect: "postgresql"
+    dialect: "postgresql",
+    logging: false,
   }
 }
 

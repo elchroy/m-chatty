@@ -1,14 +1,11 @@
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt-nodejs'
-
-import { jwtCreds } from '../config/jwt_creds'
+import bcrypt from 'bcrypt-nodejs';
 import db from '../models'
+import { createPasswordHash, createJWTToken, customResponse } from '../helpers';
+import { BadRequestError, NotFoundError, ServerError } from '../helpers/errors'
 
 const { User } = db;
-const { secret } = jwtCreds;
 
-export const signup = (req, res) => {
-	
+export const signup = (req, res, next) => {
 	const { username, password } = req.body;
 	
 	User.create({
@@ -17,43 +14,24 @@ export const signup = (req, res) => {
 	}).then(user => {
 		const { id, username } = user;
 		const token = createJWTToken({ id, username });
-		
-		res.status(201).json({ username, token })
-	}).catch(err => res.status(500).json({
-		message: "There was an error"
-	}));
+		res.status(201).json(customResponse("success", "Signup successful", { id, username, token }))
+	}).catch(err => next(new BadRequestError('Username already taken.')));
 }
 
 
-export const signin = (req, res) => {
+export const signin = (req, res, next) => {
 
 	const { username, password } = req.body;
 	
 	User.findOne({ where:{username} }).then(user => {
 		if (!user || !bcrypt.compareSync(password, user.password)) {
-			res.status(400).json({
-				message: "Signin not successful. Invalid username/password.",
-			});
+			next(new NotFoundError('Signin failure - Invalid username/password.'))
 		} else {
 			const { id, username } = user;
-			res.status(200).json({
-				id,
+			res.status(200).json(customResponse("success", "Signin successful", {
 				username,
-				message: "Signin successful",
 				token: createJWTToken({ id, username })
-			})
+			}));
 		}
-	}).catch(err => res.status(500).json({
-		message: "There was an error"
-	}))
-}
-
-const createJWTToken = (payload) => {
-	return jwt.sign(payload, secret);
-
-}
-
-const createPasswordHash = (password) => {
-	return bcrypt.hashSync(password);
-
+	}).catch(err => next(new ServerError()))
 }
