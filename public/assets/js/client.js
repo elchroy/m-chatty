@@ -131,8 +131,7 @@ new Vue({
         this.loadChats();
         this.clearAuthFields()
       }).catch(err => {
-        this.errorMessage = err.response.data.message
-        setTimeout(() => this.errorMessage = "", 2000);
+        this.showErrorMessage(err.response.data.message);
       });
     },
 
@@ -150,9 +149,13 @@ new Vue({
         this.loadChats();
         this.clearAuthFields()
       }).catch(err => {
-        this.errorMessage = "Username or password incorrect"
-        setTimeout(() => this.errorMessage = "", 2000);
+        this.showErrorMessage("Username or password incorrect");
       });
+    },
+
+    showErrorMessage (errorMessage) {
+      this.errorMessage = errorMessage
+      setTimeout(() => this.errorMessage = "", 2000);
     },
 
     loadActiveChat () {
@@ -195,6 +198,7 @@ new Vue({
     postMessage () {
       this.messageToSend = this.messageToSend.trim()
       if (!this.messageToSend) return null;
+      if (this.messageToSend.length > 255) return this.showErrorMessage("Too long");
       axios.post(`${baseURL}/chats/${this.activeChat.id}/messages`, {
         body: this.messageToSend
       }, {

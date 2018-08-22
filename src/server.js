@@ -19,7 +19,6 @@ redisClient().then(client => {
 	io.on("connection", socket => {
 		client.subscribe("channels");
 		client.on("message", (channel, message) => {
-			console.log(socket.id)
 			const msg = JSON.parse(message);
 			socket.emit("newMessage", msg);
 		});

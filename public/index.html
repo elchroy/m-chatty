@@ -71,7 +71,6 @@
 			</div>
 		</div>
 
-
 		<div id="authenticated" v-if="auth.signedIn">
 			<div id="chat" class="container">
 				<div class="row">
@@ -114,39 +113,18 @@
 						  	<div class="row">
 							  <div class="col-lg-12">
 							    <div class="input-group">
-							      <input v-use-enter-key type="text" v-model="messageToSend" class="form-control" placeholder="Type your message here">
+							      <input v-use-enter-key type="text" v-model="messageToSend" class="form-control" maxlength="250" placeholder="Type your message here">
 							      <span class="input-group-btn">
 							        <button class="btn btn-primary" type="submit" @click="sendMessage">Send</button>
 							      </span>
-							    </div><!-- /input-group -->
-							  </div><!-- /.col-lg-6 -->
-							</div><!-- /.row -->
+							    </div>
+							  </div>
+							</div>
 						  </div>
 						</div>
 					</div>
 				</div>
 			</div>
-
-			<!-- <ul>
-				<li @click="enableChat(user)" class="single-user" v-for="user in users">{{ user.username }}</li>
-			</ul> -->
-
-			<!-- <div>
-				Chats:
-				<span @click="loadChat(chat)" v-for="chat in chats"> {{ chat.name}} </span>
-			</div> -->
-
-			<!-- <div v-if="openChat">
-				<ul>
-					Thread for CHAT-{{ activeChat.name }}
-					<li v-for="message in messages"> {{ message.from }}: {{ message.body }} </li>
-				</ul>
-
-				<div>
-					<input type="text" v-model="messageBody" name="message-body" id="message-body" v-attr:placeholder="messageBody">
-					<button @click="sendMessage" name="send-buttton">Send Message</button>
-				</div>
-			</div> -->
 		</div>
 
 	</div>
