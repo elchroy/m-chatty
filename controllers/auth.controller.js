@@ -11,7 +11,8 @@ export const signup = (req, res, next) => {
 	User.create({
 		username,
 		password: createPasswordHash(password)
-	}).then(user => {
+	}).then(async user => {
+		await req.genChat.addUser(user);
 		const { id, username } = user;
 		const token = createJWTToken({ id, username });
 		res.status(201).json(customResponse("success", "Signup successful", { id, username, token }))

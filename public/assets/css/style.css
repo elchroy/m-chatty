@@ -1,0 +1,116 @@
+* {
+	/*border: solid red 0.04px;*/
+}
+
+
+
+html, body {
+	text-align: center;
+	font-family: 'Avenir Next', 'Helvetica', 'Arial', sans-serif
+}
+
+html, body, li, form, ul {
+	padding: 0;
+	margin: 0;
+}
+
+form {
+	padding-bottom: 2%;
+}
+
+div#main {
+	/*the Chat text*/
+}
+
+li.chat-name {
+	cursor: pointer;
+	list-style: none;
+}
+
+li.chat-name:hover {
+	background: #8391a4;
+    color: #fdfdff;
+    /*border: 0.04px;*/
+}
+
+li.chat-name.active:hover {
+	background: #007bff;
+    color: #fff;
+}
+
+div#messages-container {
+	height: 60vh;
+    overflow: scroll;
+}
+
+div.chat-heading {
+	background: #007bff;
+    color: #fff;
+}
+
+div#authenticated {
+	margin-bottom: 30px;
+}
+
+li.single-message {
+	padding: 3px;
+    text-align: left;
+    font-size: 80%;
+}
+
+form input.chat-form-input {
+	width: 40%;
+    margin: auto;
+}
+
+div#chat-branding {
+	padding: 1em;
+    margin-bottom: 5px;
+    border-bottom: 1px #017bfe solid
+}
+
+div#auth-profile {
+	margin: 5px 0;
+}
+
+div#auth-profile h4 {
+	font-style: italic;
+	font-weight: bolder;
+}
+div#auth-profile * {
+	display: inline-block;
+}
+
+span#error-message {
+	font-size: 90%;
+    background: #ff3600;
+    color: #ffffff;
+    display: block;
+    font-style: italic;
+    font-weight: bolder;
+}
+
+span#disclaimer {
+	color: #c31414;
+    font-style: italic;
+    font-size: 80%;
+}
+
+hr {
+	margin: 0;
+}
+
+span#my-name {
+	color: #19a2b8;
+    font-weight: bolder;
+}
+
+a.my-contacts {
+    font-weight: bolder;
+}
+
+div#get-started {
+	color: #017bfe;
+    font-size: 120%;
+    font-weight: bold;
+}

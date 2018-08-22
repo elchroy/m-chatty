@@ -1,6 +1,6 @@
 import express from 'express';
 import { verifyAuth, verifyChat } from '../middlewares'
-import { createChat, getAllUserChats, getOneUserChat, getOneChat, joinChat } from '../controllers/chats.controller.js'
+import { createChat, getAllChats, getAllUserChats, getOneUserChat, getOneChat, joinChat } from '../controllers/chats.controller.js'
 import { createChatMessage, getAllChatMessages } from '../controllers/messages.controller.js'
 const chatRouter = express.Router();
 

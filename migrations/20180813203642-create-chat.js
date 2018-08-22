@@ -11,7 +11,7 @@ module.exports = {
       name: {
         allowNull: false,
         type: Sequelize.STRING,
-        default: 'Channel-Name'
+        unique: true
       },
       UserId: {
         allowNull: false,
@@ -28,7 +28,7 @@ module.exports = {
     });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('UserChats');
+    queryInterface.dropTable('UserChats');
     return queryInterface.dropTable('Chats');
   }
 };

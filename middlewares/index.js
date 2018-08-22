@@ -8,11 +8,15 @@ const { Chat, User } = db;
 
 const { secret } = jwtCreds;
 
-export const verifySignUp = (req, res, next) => {
+export const verifySignUp = async (req, res, next) => {
 	const { username, password } = req.body || ""
 	if (!username || !password) {
 		next(new BadRequestError('Username/Password are required', 400))
 	} else {
+		const genChat = await Chat.findOne({
+			where: { name: "general" }
+		});
+		req.genChat = genChat;
 		next();
 	}
 }

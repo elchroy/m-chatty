@@ -7,7 +7,7 @@ export const getAll = (req, res) => {
 			return {
 				id: user.id,
 				username: user.username,
-				// dateJoined: user.updatedAt
+				dateJoined: user.updatedAt
 			}
 		})
 		res.status(200).json(filteredUsers)

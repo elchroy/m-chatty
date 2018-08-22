@@ -13,7 +13,7 @@ export const createChat = async (req, res) => {
 
 	await chat.addUser(authUser);
 
-	res.status(201).json(customResponse("success", "New message created", chat));
+	res.status(201).json(customResponse("success", "New chat created", chat));
 }
 
 /**
@@ -27,6 +27,19 @@ export const getAllUserChats = async (req, res, next) => {
 	});
 	
 	res.status(201).json(customResponse("success", "Chats", userChats));
+}
+
+/**
+ * Get all the chats 
+ */
+export const getAllChats = async (req, res, next) => {
+	const { authUser } = req // destructuring
+
+	const chats = await Chat.findAll({
+		attributes: ['id', 'name']
+	});
+	
+	res.status(201).json(customResponse("success", "Chats", chats));
 }
 
 export const getOneChat = (req, res) => {

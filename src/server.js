@@ -4,29 +4,24 @@ import express from 'express';
 import socket from 'socket.io';
 
 import { socketController } from '../controllers/sockets.controller';
+import { redisClient } from "../redis";
 import app from './app';
-
-const server = http.createServer(app);// create a server with the app.
-const io = socket.listen(server);// ask socket to listen to that server.
 
 const PORT = 9000;
 const hostname = 'http://localhost'
-server.listen(PORT, () => console.log(`App listening on ${hostname}:${PORT}`));
 
-socketController(io)
-
-
-
-
-
-
-
-
-
-
-// app.all("*", (req, res) => {
-// 	res.json("mnone")
-// })
-
-
-
+redisClient().then(client => {
+	const server = http.createServer(app);// create a server with the app.
+	server.listen(PORT, () => console.log(`App listening on ${hostname}:${PORT}`));
+	
+	const io = socket.listen(server);// ask socket to listen to that server.
+	
+	io.on("connection", socket => {
+		client.subscribe("channels");
+		client.on("message", (channel, message) => {
+			console.log(socket.id)
+			const msg = JSON.parse(message);
+			socket.emit("newMessage", msg);
+		});
+	});
+}).catch(err => console.log(err));

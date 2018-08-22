@@ -1,8 +1,10 @@
 import express from 'express';
-import db from '../models'
+import db from '../models';
+import path from 'path';
 import bodyParser from 'body-parser';
 
-import { verifyAuth } from '../middlewares'
+import { verifyAuth } from '../middlewares';
+import { prepareFirstChat } from '../helpers';
 import { authRouter, userRouter, messageRouter, chatRouter } from '../routers'
 
 const app = express();
@@ -29,6 +31,11 @@ app.use((err, req, res, next) => {
 	res.status(err.errorCode || 500).json(err)
 });
 
+app.set("views", path.join(__dirname, "../public/views"));
+app.set("view engine", "pug");
+
 db.sequelize.sync();
+
+prepareFirstChat(db);
 
 export default app;
