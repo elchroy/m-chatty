@@ -8,7 +8,8 @@
     "test": "NODE_ENV=test ./node_modules/.bin/mocha ./dist/tests/**/*.spec.js --watch --timeout 1000",
     "build": "babel ./**/*.js ./*.js --out-dir ./dist ",
     "watch": "babel -w ./**/*.js --out-dir ./dist",
-    "start": "yarn run watch | yarn run serve"
+    "start-dev": "yarn run watch | yarn run serve",
+    "start-dev": "yarn run serve"
   },
   "author": "",
   "license": "ISC",
